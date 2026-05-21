@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyber-Breach: Data Core | 기획 제안서</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    
+    <!-- Chosen Palette: Corporate Clean-Room Cyberpunk (Warm Neutrals + Neon Accents) -->
+    <!-- Application Structure Plan: 
+         This SPA is designed as an interactive "Pitch Deck Dashboard" for the student game development club.
+         1. Hero/Exec Summary: Immediately establishes the game's identity and core loop using a "terminal" typing effect.
+         2. Genre Analysis: Uses a Radar chart to compare competitors, visually proving where Cyber-Breach fits.
+         3. Core Mechanics & Content: A tabbed interface and filterable grid to prevent info-dumping, allowing users to explore weapons, enemies, and the unique 'Node' mechanic easily.
+         4. Production Plan: Shows the MVP roadmap and technical risk assessment, crucial for a time-constrained 4-6 week student project. 
+         This non-linear structure lets programmers jump to tech specs, while designers can focus on mechanics. -->
+    <!-- Visualization & Content Choices: 
+         - Competitor Analysis -> Compare strengths -> Radar Chart (Chart.js) -> Best shows multi-dimensional comparison.
+         - Development Roadmap -> Time/Task planning -> Horizontal Bar Chart (Chart.js) -> Acts as a Gantt chart substitute.
+         - Content Ideas -> Organize -> Filterable Data Grid (HTML/JS) -> Allows easy sorting of weapons vs enemies.
+         - Node Mechanic -> Explain interaction -> CSS/HTML animated diagram -> Explains spatial interaction without SVG/Mermaid.
+         - NO SVG/Mermaid used. Reliance on Unicode icons and Canvas. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #f8fafc; /* light stone/slate */
+            color: #1e293b;
+        }
+        .font-mono { font-family: 'Share Tech Mono', monospace; }
+        
+        /* Mandatory Chart Container Styling */
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container { height: 350px; }
+        }
+
+        /* Cyberpunk Accents for Light Theme */
+        .cyber-border { border-left: 4px solid #06b6d4; }
+        .cyber-border-alt { border-left: 4px solid #9333ea; }
+        .cyber-shadow { box-shadow: 4px 4px 0px 0px rgba(6, 182, 212, 0.2); }
+        
+        /* Terminal Typing Effect */
+        .typing-cursor::after {
+            content: '█';
+            animation: blink 1s step-start infinite;
+            color: #06b6d4;
+        }
+        @keyframes blink { 50% { opacity: 0; } }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    </style>
+</head>
+<body class="antialiased selection:bg-cyan-200 selection:text-cyan-900">
+
+    <!-- Navigation -->
+    <nav class="sticky top-0 z-50 bg-white/90 backdrop-blur border-b border-slate-200 px-6 py-4 shadow-sm">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div class="font-mono text-xl font-bold text-slate-800 tracking-tighter">
+                <span class="text-cyan-600">SYS.</span>CYBER_BREACH<span class="animate-pulse text-purple-600">_</span>
+            </div>
+            <div class="flex gap-4 text-sm font-semibold text-slate-600">
+                <a href="#summary" class="hover:text-cyan-600 transition-colors">요약</a>
+                <a href="#analysis" class="hover:text-cyan-600 transition-colors">장르 분석</a>
+                <a href="#mechanics" class="hover:text-cyan-600 transition-colors">핵심 시스템</a>
+                <a href="#production" class="hover:text-cyan-600 transition-colors">개발 로드맵</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-16">
+
+        <!-- Section: Executive Summary -->
+        <section id="summary" class="scroll-mt-24">
+            <div class="bg-white p-8 rounded-xl shadow-lg cyber-shadow border border-slate-200">
+                <p class="text-sm font-mono text-cyan-600 font-bold mb-2">&gt; INIT_DOCUMENT</p>
+                <h1 class="text-3xl md:text-5xl font-black text-slate-900 mb-6 tracking-tight">Cyber-Breach: <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-600 to-purple-600">Data Core</span></h1>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="md:col-span-2 space-y-4 text-slate-700 leading-relaxed text-lg">
+                        <p id="typed-summary" class="typing-cursor font-mono bg-slate-50 p-4 rounded border border-slate-200 min-h-[120px]"></p>
+                        <p>이 문서는 동아리 게임 개발 프로젝트(4~6주)를 위한 <strong>2D 웹 기반 서바이버라이크 게임</strong>의 핵심 구조, 차별화 요소, 그리고 현실적인 개발 스코프를 정의합니다. 플레이어는 메인프레임에 침투한 해커 프로그램이 되어, 끝없이 몰려오는 백신과 ICE를 물리치며 데이터를 탈취해야 합니다.</p>
+                    </div>
+                    <div class="bg-slate-50 p-6 rounded-lg border border-slate-200 flex flex-col justify-center">
+                        <h3 class="font-bold text-slate-900 mb-4 border-b border-slate-300 pb-2">프로젝트 핵심 목표</h3>
+                        <ul class="space-y-3 text-sm">
+                            <li class="flex items-center gap-2">🎯 <span class="font-semibold text-cyan-700">핵심 루프:</span> 이동, 자동 공격, 레벨업, 빌드 구성</li>
+                            <li class="flex items-center gap-2">🔥 <span class="font-semibold text-purple-700">차별화:</span> 보안 노드 점령 (위험/보상 극대화)</li>
+                            <li class="flex items-center gap-2">⏱️ <span class="font-semibold text-rose-700">스코프:</span> 4-6주 내 5분 MVP 및 10분 데모 완성</li>
+                            <li class="flex items-center gap-2">💻 <span class="font-semibold text-slate-700">기술 스택:</span> TypeScript + Phaser 3</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: Genre Analysis -->
+        <section id="analysis" class="scroll-mt-24">
+            <div class="mb-6">
+                <h2 class="text-2xl font-bold text-slate-900 flex items-center gap-2"><span class="text-2xl">📊</span> 서바이버라이크 장르 분석 및 차별화</h2>
+                <p class="text-slate-600 mt-2">유사 게임들과의 비교를 통해 Cyber-Breach가 집중해야 할 게임성(포지셔닝)을 확인합니다. 차트의 데이터 포인트를 호버하여 각 게임의 특징을 확인하세요.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                <div class="bg-white p-6 rounded-xl border border-slate-200 cyber-border">
+                    <div class="chart-container">
+                        <canvas id="genreRadarChart"></canvas>
+                    </div>
+                </div>
+                <div class="space-y-4">
+                    <div class="bg-slate-50 p-4 rounded-lg border border-slate-200">
+                        <h4 class="font-bold text-slate-800">🦇 Vampire Survivors</h4>
+                        <p class="text-sm text-slate-600">장르의 원형. 메타 프로그레션(영구 성장)과 무기 조합(진화)이 핵심. 게임플레이 자체는 단순한 이동에 집중됨.</p>
+                    </div>
+                    <div class="bg-slate-50 p-4 rounded-lg border border-slate-200">
+                        <h4 class="font-bold text-slate-800">🥔 Brotato</h4>
+                        <p class="text-sm text-slate-600">웨이브 기반 구조와 상점 시스템. 좁은 맵에서의 극단적인 빌드 자유도와 액션성이 강조됨.</p>
+                    </div>
+                    <div class="bg-slate-50 p-4 rounded-lg border border-slate-200">
+                        <h4 class="font-bold text-slate-800">🔫 20 Minutes Till Dawn</h4>
+                        <p class="text-sm text-slate-600">수동 조준 및 재장전 시스템 도입. 액션의 밀도가 매우 높고 피지컬을 요구함.</p>
+                    </div>
+                    <div class="bg-cyan-50 p-4 rounded-lg border border-cyan-200 shadow-sm relative overflow-hidden">
+                        <div class="absolute top-0 right-0 bg-cyan-500 text-white text-xs font-bold px-2 py-1 rounded-bl-lg">TARGET</div>
+                        <h4 class="font-bold text-cyan-900">💻 Cyber-Breach (본 프로젝트)</h4>
+                        <p class="text-sm text-cyan-800 mt-1">이동/자동공격의 캐주얼함을 유지하되, <strong>'노드 해킹(거점 방어)'이라는 맵 기믹</strong>을 통해 플레이어에게 능동적인 위험 감수(Risk & Reward)를 유도.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: Core Mechanics (Node System) -->
+        <section id="mechanics" class="scroll-mt-24">
+            <div class="mb-6">
+                <h2 class="text-2xl font-bold text-slate-900 flex items-center gap-2"><span class="text-2xl">⚙️</span> 핵심 시스템: 보안 노드 해킹</h2>
+                <p class="text-slate-600 mt-2">서바이버라이크의 지속적인 이동 흐름을 해치지 않으면서 거점 점령을 구현하는 방법에 대한 디자인 해결책입니다.</p>
+            </div>
+
+            <div class="bg-white p-8 rounded-xl border border-slate-200 cyber-border-alt">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Text Explanation -->
+                    <div>
+                        <h3 class="text-xl font-bold text-purple-700 mb-4">"Drive-By Hacking" (누적형 거점 점령)</h3>
+                        <p class="text-slate-700 mb-4">
+                            기존 게임의 가만히 서 있어야 하는 점령(예: 오버워치 화물)은 서바이버라이크의 카이팅(도망치며 공격) 룰과 충돌합니다. 
+                            이를 해결하기 위해 노드 범위 내에 머물면 <strong>해킹 게이지가 차오르고, 범위를 벗어나도 게이지가 초기화되지 않는 방식</strong>을 채택합니다.
+                        </p>
+                        <ul class="space-y-2 text-sm text-slate-600">
+                            <li>✔️ <strong>Risk:</strong> 노드 주변에는 엘리트 적(방화벽)이 스폰되어 난이도 상승.</li>
+                            <li>✔️ <strong>Reward:</strong> 해킹 100% 달성 시 즉시 다량의 경험치 큐브와 '데이터 상자(무기 업그레이드)' 드롭.</li>
+                            <li>✔️ <strong>Flow:</strong> 적이 너무 많아지면 노드 밖으로 도망쳐 적을 유인한 뒤, 다시 돌아와 해킹을 재개하는 전략적 카이팅 유도.</li>
+                        </ul>
+                    </div>
+                    <!-- HTML Diagram -->
+                    <div class="bg-slate-900 rounded-lg p-4 relative flex items-center justify-center overflow-hidden font-mono min-h-[250px]">
+                        <!-- Grid Background -->
+                        <div class="absolute inset-0 opacity-20" style="background-image: linear-gradient(#334155 1px, transparent 1px), linear-gradient(90deg, #334155 1px, transparent 1px); background-size: 20px 20px;"></div>
+                        
+                        <!-- Node Area -->
+                        <div id="node-area" class="w-40 h-40 border-2 border-dashed border-purple-500 rounded-full flex flex-col items-center justify-center relative z-10 transition-colors duration-300 bg-purple-500/10">
+                            <span class="text-purple-400 text-xs font-bold mb-1">SECURITY NODE</span>
+                            <div class="w-24 h-4 bg-slate-800 border border-purple-500 rounded p-0.5">
+                                <div id="hack-progress" class="h-full bg-purple-500 w-0 transition-all duration-[200ms]"></div>
+                            </div>
+                            <span id="hack-text" class="text-white text-[10px] mt-1">0%</span>
+                        </div>
+                        
+                        <!-- Player -->
+                        <div id="player-dot" class="w-4 h-4 bg-cyan-400 rounded-full shadow-[0_0_10px_#22d3ee] absolute z-20 transition-all duration-[400ms] flex items-center justify-center">
+                            <span class="text-[8px]">P</span>
+                        </div>
+                        
+                        <!-- Interactive Button -->
+                        <button onclick="simulateHacking()" class="absolute bottom-2 right-2 bg-slate-700 hover:bg-slate-600 text-white text-xs px-3 py-1 rounded border border-slate-500 z-30 transition-colors">▶ 시뮬레이션 재생</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: Content Ideas -->
+        <section class="scroll-mt-24">
+            <div class="mb-6">
+                <h2 class="text-2xl font-bold text-slate-900 flex items-center gap-2"><span class="text-2xl">📦</span> 사이버펑크 에셋 & 아이디어</h2>
+                <p class="text-slate-600 mt-2">해킹과 사이버펑크 테마를 직관적인 아케이드 기믹으로 치환한 아이디어 목록입니다. 카테고리를 클릭하여 필터링하세요.</p>
+            </div>
+
+            <!-- Tabs -->
+            <div class="flex flex-wrap gap-2 mb-4">
+                <button onclick="filterContent('all')" class="content-tab active px-4 py-2 bg-slate-800 text-white rounded shadow-sm text-sm font-bold transition-colors hover:bg-slate-700">전체 보기</button>
+                <button onclick="filterContent('weapon')" class="content-tab px-4 py-2 bg-white text-slate-600 border border-slate-200 rounded shadow-sm text-sm font-bold transition-colors hover:bg-slate-100 hover:text-cyan-600">🔫 무기 (공격)</button>
+                <button onclick="filterContent('passive')" class="content-tab px-4 py-2 bg-white text-slate-600 border border-slate-200 rounded shadow-sm text-sm font-bold transition-colors hover:bg-slate-100 hover:text-cyan-600">⚙️ 패시브 (업그레이드)</button>
+                <button onclick="filterContent('enemy')" class="content-tab px-4 py-2 bg-white text-slate-600 border border-slate-200 rounded shadow-sm text-sm font-bold transition-colors hover:bg-slate-100 hover:text-cyan-600">👾 적 (ICE / 프로그램)</button>
+            </div>
+
+            <!-- Content Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4" id="content-grid">
+                <!-- Javascript will populate this -->
+            </div>
+        </section>
+
+        <!-- Section: Development Scope & Roadmap -->
+        <section id="production" class="scroll-mt-24">
+            <div class="mb-6">
+                <h2 class="text-2xl font-bold text-slate-900 flex items-center gap-2"><span class="text-2xl">🚀</span> 프로덕션 & 로드맵 (4~6주)</h2>
+                <p class="text-slate-600 mt-2">동아리 인력과 시간을 고려한 현실적인 마일스톤과 기술적 난이도 분석입니다.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Roadmap Chart -->
+                <div class="lg:col-span-2 bg-white p-6 rounded-xl border border-slate-200 cyber-border">
+                    <h3 class="font-bold text-slate-800 mb-4">주차별 개발 로드맵</h3>
+                    <div class="chart-container h-80">
+                        <canvas id="roadmapChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Scope Definition -->
+                <div class="bg-slate-800 p-6 rounded-xl text-slate-200 shadow-lg">
+                    <h3 class="font-bold text-cyan-400 mb-4 border-b border-slate-600 pb-2">🎯 목표 스코프 정의</h3>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <h4 class="text-white font-bold flex justify-between"><span>[MVP] 5분 데모</span> <span class="text-xs bg-slate-600 px-2 py-1 rounded text-white">3주차</span></h4>
+                            <ul class="text-sm mt-2 space-y-1 text-slate-400 pl-2 border-l-2 border-cyan-500">
+                                <li>캐릭터 1종 (기본 이동)</li>
+                                <li>무기 4종 / 패시브 4종</li>
+                                <li>적 4종 (기본, 원거리, 자폭, 탱커)</li>
+                                <li>보안 노드 시스템 (단일 스폰)</li>
+                                <li>기본 무한 루프 맵 (단색 배경 격자)</li>
+                            </ul>
+                        </div>
+                        
+                        <div>
+                            <h4 class="text-white font-bold flex justify-between"><span>[베타] 10분 빌드</span> <span class="text-xs bg-slate-600 px-2 py-1 rounded text-white">5주차</span></h4>
+                            <ul class="text-sm mt-2 space-y-1 text-slate-400 pl-2 border-l-2 border-purple-500">
+                                <li>5분, 10분대 보스 스폰 시스템</li>
+                                <li>무기 진화(조합) 시스템 2종 추가</li>
+                                <li>사운드 효과 (BGM 1, SFX)</li>
+                                <li>UI 폴리싱 (데미지 텍스트, 레벨업 창)</li>
+                            </ul>
+                        </div>
+                        
+                        <div>
+                            <h4 class="text-rose-400 font-bold flex justify-between"><span>[위험/과욕] 제외 권장</span> <span class="text-xs bg-rose-900/50 px-2 py-1 rounded text-rose-200">배제</span></h4>
+                            <p class="text-xs text-slate-400 mt-1">인벤토리 시스템, 복잡한 해킹 미니게임(퍼즐), 멀티플레이, 랜덤 맵 생성(절차적 맵).</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: Technical Analysis -->
+        <section class="bg-white p-8 rounded-xl border border-slate-200 mb-16">
+            <h2 class="text-2xl font-bold text-slate-900 mb-6 border-b border-slate-100 pb-4">🛠️ 기술 및 에셋 요구사항 (Phaser 3 + TS)</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <!-- Implementation Difficulty -->
+                <div>
+                    <h3 class="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2">🕹️ 구현 난이도 매트릭스</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-start gap-3">
+                            <span class="bg-green-100 text-green-800 text-xs font-bold px-2 py-1 rounded min-w-[60px] text-center">LOW</span>
+                            <p class="text-sm text-slate-600"><strong>이동 및 자동 사격:</strong> Phaser의 Arcade Physics로 쉽게 구현. 가장 가까운 적 타겟팅 알고리즘.</p>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <span class="bg-green-100 text-green-800 text-xs font-bold px-2 py-1 rounded min-w-[60px] text-center">LOW</span>
+                            <p class="text-sm text-slate-600"><strong>아이템 픽업:</strong> 오버랩 이벤트 처리. 자석 효과(Tween) 구현.</p>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <span class="bg-yellow-100 text-yellow-800 text-xs font-bold px-2 py-1 rounded min-w-[60px] text-center">MED</span>
+                            <p class="text-sm text-slate-600"><strong>보안 노드 로직:</strong> 플레이어와의 거리 측정, 게이지 UI 업데이트, 특정 범위 내 몹 스폰 로직 분리.</p>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <span class="bg-yellow-100 text-yellow-800 text-xs font-bold px-2 py-1 rounded min-w-[60px] text-center">MED</span>
+                            <p class="text-sm text-slate-600"><strong>업그레이드 선택 UI:</strong> 게임 일시정지 로직과 데이터 배열 셔플링을 통한 랜덤 3택 시스템.</p>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <span class="bg-red-100 text-red-800 text-xs font-bold px-2 py-1 rounded min-w-[60px] text-center">HIGH</span>
+                            <p class="text-sm text-slate-600"><strong>최적화 (500+ 적):</strong> 객체 풀링(Object Pooling) 필수. 단순 Physics 대신 커스텀 이동 로직 필요할 수 있음.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Assets & AI Workflow -->
+                <div>
+                    <h3 class="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2">🎨 픽셀 아트 최소 에셋 (16x16 or 32x32)</h3>
+                    <ul class="grid grid-cols-2 gap-2 text-sm text-slate-600 mb-6">
+                        <li>✔️ 플레이어 (대기/이동 2프레임)</li>
+                        <li>✔️ 적 4종 (기본 애니메이션)</li>
+                        <li>✔️ 보스 1종 (크기 2배)</li>
+                        <li>✔️ 발사체 (총알, 레이저 빔)</li>
+                        <li>✔️ 경험치 큐브 (색상별 3종)</li>
+                        <li>✔️ 바닥 타일 (테크노 그리드 1종)</li>
+                        <li>✔️ 보안 노드 (비활성/활성 상태)</li>
+                        <li>✔️ UI 아이콘 (무기 4, 패시브 4)</li>
+                    </ul>
+
+                    <h3 class="text-lg font-bold text-slate-800 mb-3 border-t border-slate-100 pt-4">🤖 AI 에이전트 개발 워크플로우</h3>
+                    <div class="bg-slate-50 p-4 rounded border border-slate-200 text-sm">
+                        <ul class="space-y-2 text-slate-700">
+                            <li><strong>기획/스코프 제어:</strong> <span class="text-purple-600 font-semibold">ChatGPT</span> (문서화, 로직 흐름 검증)</li>
+                            <li><strong>코드 구현 (TS/Phaser):</strong> <span class="text-blue-600 font-semibold">Cursor IDE / Codex</span> (객체 풀링, 충돌 처리 보일러플레이트 작성 위임)</li>
+                            <li><strong>에셋 생성:</strong> <span class="text-orange-600 font-semibold">PixelLab / AI Image</span> (기본 스프라이트 시트 생성 후 직접 다듬기)</li>
+                            <li class="text-rose-600 text-xs mt-2">* 주의: 게임 밸런싱(수치 조정)과 물리 엔진 세부 튜닝은 AI에 전적으로 위임하지 말고 직접 테스트하며 맞출 것.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-slate-900 text-slate-400 py-6 text-center text-sm font-mono">
+        <p>CYBER-BREACH PROJECT PROPOSAL /// AUTHORIZED PERSONNEL ONLY</p>
+    </footer>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // State Management
+        const state = {
+            currentFilter: 'all',
+            contentItems: [
+                { type: 'weapon', name: 'Bit-Gun (기본 펄스)', icon: '🔫', desc: '가장 가까운 적에게 단일 타겟 레이저 발사. 업그레이드 시 공속 증가.' },
+                { type: 'weapon', name: 'Firewall (화염벽)', icon: '🔥', desc: '플레이어 이동 경로에 데미지를 주는 데이터 잔해를 남김.' },
+                { type: 'weapon', name: 'DDoS Burst (산탄)', icon: '💥', desc: '일정 주기마다 사방으로 다량의 데이터 패킷을 흩뿌림.' },
+                { type: 'weapon', name: 'Worm Virus (바운스)', icon: '🐛', desc: '적을 관통하고 근처의 다른 적에게 튕기는 유도성 투사체.' },
+                { type: 'passive', name: 'Overclock (공속)', icon: '⚡', desc: '모든 무기의 발사 쿨타임 감소.' },
+                { type: 'passive', name: 'RAM Upgrade (자석)', icon: '🧲', desc: '드롭된 데이터 조각(경험치)을 끌어당기는 범위 증가.' },
+                { type: 'passive', name: 'Heatsink (체력)', icon: '❤️', desc: '최대 체력(무결성) 증가 및 소량 자동 회복.' },
+                { type: 'passive', name: 'Proxy Shield (방어)', icon: '🛡️', desc: '1회 피격을 무효화하는 보호막 생성. 쿨타임 존재.' },
+                { type: 'enemy', name: 'Tracker (추적자)', icon: '👾', desc: '가장 기본이 되는 근접 적. 물량으로 승부.' },
+                { type: 'enemy', name: 'ICE Wall (탱커)', icon: '🧱', desc: '이동속도는 매우 느리나 체력이 높고 플레이어의 투사체를 막아냄.' },
+                { type: 'enemy', name: 'Glitch Drone (원거리)', icon: '🛸', desc: '일정 거리를 유지하며 플레이어를 향해 느린 빔을 발사.' },
+                { type: 'enemy', name: 'Admin (보스)', icon: '💀', desc: '특정 시간(5분, 10분)에 등장. 탄막 패턴을 사용하며 체력이 높음.' },
+            ]
+        };
+
+        // 1. Terminal Typing Effect
+        document.addEventListener('DOMContentLoaded', () => {
+            const text = ">> 시스템 접속 성공... 메인프레임 분석 중...\n>> 사이버펑크 테마의 서바이버라이크 게임 기획안 로드 완료.\n>> 목표: 보안 노드를 해킹하여 시스템 권한을 탈취하라.";
+            const target = document.getElementById('typed-summary');
+            let i = 0;
+            
+            function typeWriter() {
+                if (i < text.length) {
+                    if(text.charAt(i) === '\n') {
+                        target.innerHTML += '<br>';
+                    } else {
+                        target.innerHTML += text.charAt(i);
+                    }
+                    i++;
+                    setTimeout(typeWriter, 40);
+                } else {
+                    target.classList.remove('typing-cursor');
+                }
+            }
+            setTimeout(typeWriter, 500);
+
+            // Initialize UI Components
+            renderContentGrid();
+            initCharts();
+        });
+
+        // 2. Content Grid Filtering
+        function renderContentGrid() {
+            const grid = document.getElementById('content-grid');
+            grid.innerHTML = '';
+            
+            const filtered = state.currentFilter === 'all' 
+                ? state.contentItems 
+                : state.contentItems.filter(item => item.type === state.currentFilter);
+
+            filtered.forEach(item => {
+                let badgeClass = '';
+                let typeName = '';
+                if(item.type === 'weapon') { badgeClass = 'bg-rose-100 text-rose-700'; typeName = 'WEAPON'; }
+                if(item.type === 'passive') { badgeClass = 'bg-cyan-100 text-cyan-700'; typeName = 'PASSIVE'; }
+                if(item.type === 'enemy') { badgeClass = 'bg-purple-100 text-purple-700'; typeName = 'ENEMY'; }
+
+                const card = `
+                    <div class="bg-white p-4 rounded-lg border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+                        <div class="flex justify-between items-start mb-2">
+                            <span class="text-2xl">${item.icon}</span>
+                            <span class="text-[10px] font-bold px-2 py-0.5 rounded ${badgeClass}">${typeName}</span>
+                        </div>
+                        <h4 class="font-bold text-slate-800 mb-1">${item.name}</h4>
+                        <p class="text-xs text-slate-500 leading-relaxed">${item.desc}</p>
+                    </div>
+                `;
+                grid.innerHTML += card;
+            });
+        }
+
+        window.filterContent = function(type) {
+            state.currentFilter = type;
+            // Update button styles
+            document.querySelectorAll('.content-tab').forEach(btn => {
+                if (btn.innerText.toLowerCase().includes(type) || (type === 'all' && btn.innerText.includes('전체'))) {
+                    btn.className = 'content-tab active px-4 py-2 bg-slate-800 text-white rounded shadow-sm text-sm font-bold transition-colors hover:bg-slate-700';
+                } else {
+                    btn.className = 'content-tab px-4 py-2 bg-white text-slate-600 border border-slate-200 rounded shadow-sm text-sm font-bold transition-colors hover:bg-slate-100 hover:text-cyan-600';
+                }
+            });
+            renderContentGrid();
+        }
+
+        // 3. Node Hacking Simulation (HTML/CSS Animation Control)
+        window.simulateHacking = function() {
+            const player = document.getElementById('player-dot');
+            const nodeArea = document.getElementById('node-area');
+            const progress = document.getElementById('hack-progress');
+            const hackText = document.getElementById('hack-text');
+            
+            // Reset
+            player.style.transform = 'translate(-80px, -60px)';
+            progress.style.width = '0%';
+            hackText.innerText = '0%';
+            nodeArea.classList.remove('bg-purple-500/30', 'border-cyan-400');
+            nodeArea.classList.add('bg-purple-500/10', 'border-purple-500');
+
+            // Sequence
+            setTimeout(() => {
+                // Enter Node
+                player.style.transform = 'translate(10px, 10px)';
+                nodeArea.classList.replace('bg-purple-500/10', 'bg-purple-500/30');
+                
+                let pct = 0;
+                let interval = setInterval(() => {
+                    pct += 10;
+                    progress.style.width = pct + '%';
+                    hackText.innerText = pct + '%';
+                    
+                    // Exit node temporarily (Kiting mechanic)
+                    if (pct === 40) {
+                        clearInterval(interval);
+                        player.style.transform = 'translate(90px, -40px)'; // run away
+                        nodeArea.classList.replace('bg-purple-500/30', 'bg-purple-500/10');
+                        
+                        setTimeout(() => {
+                            // Return to node
+                            player.style.transform = 'translate(-20px, 20px)';
+                            nodeArea.classList.replace('bg-purple-500/10', 'bg-purple-500/30');
+                            
+                            interval = setInterval(() => {
+                                pct += 10;
+                                progress.style.width = pct + '%';
+                                hackText.innerText = pct + '%';
+                                if (pct >= 100) {
+                                    clearInterval(interval);
+                                    nodeArea.classList.replace('border-purple-500', 'border-cyan-400');
+                                    hackText.innerText = 'COMPLETE!';
+                                    hackText.classList.add('text-cyan-400', 'font-bold');
+                                    // reset player
+                                    setTimeout(() => { player.style.transform = 'translate(0px, 0px)'; }, 1000);
+                                }
+                            }, 300);
+                        }, 1500);
+                    }
+                }, 300);
+            }, 500);
+        }
+
+        // 4. Chart.js Initialization
+        function initCharts() {
+            // Setup default font configuration
+            Chart.defaults.font.family = "'Noto Sans KR', sans-serif";
+            Chart.defaults.color = '#64748b';
+
+            // Radar Chart - Genre Analysis
+            const ctxRadar = document.getElementById('genreRadarChart').getContext('2d');
+            new Chart(ctxRadar, {
+                type: 'radar',
+                data: {
+                    labels: ['액션성 (컨트롤)', '빌드 다양성', '메타 프로그레션', '고유 기믹 (전략)'],
+                    datasets: [
+                        {
+                            label: 'Vampire Survivors',
+                            data: [3, 8, 10, 3],
+                            backgroundColor: 'rgba(203, 213, 225, 0.2)', // slate-300
+                            borderColor: 'rgba(148, 163, 184, 1)',
+                            pointBackgroundColor: 'rgba(148, 163, 184, 1)',
+                            borderWidth: 2
+                        },
+                        {
+                            label: 'Brotato',
+                            data: [6, 10, 5, 5],
+                            backgroundColor: 'rgba(216, 180, 254, 0.2)', // purple-300
+                            borderColor: 'rgba(168, 85, 247, 1)',
+                            pointBackgroundColor: 'rgba(168, 85, 247, 1)',
+                            borderWidth: 2
+                        },
+                        {
+                            label: 'Cyber-Breach (Target)',
+                            data: [7, 6, 4, 9],
+                            backgroundColor: 'rgba(6, 182, 212, 0.4)', // cyan-500
+                            borderColor: 'rgba(8, 145, 178, 1)', // cyan-600
+                            pointBackgroundColor: 'rgba(8, 145, 178, 1)',
+                            borderWidth: 3,
+                            fill: true
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            angleLines: { color: 'rgba(226, 232, 240, 1)' },
+                            grid: { color: 'rgba(226, 232, 240, 1)' },
+                            pointLabels: { font: { size: 12, weight: 'bold' }, color: '#475569' },
+                            ticks: { display: false, min: 0, max: 10 }
+                        }
+                    },
+                    plugins: {
+                        legend: { position: 'bottom', labels: { usePointStyle: true, boxWidth: 8 } },
+                        tooltip: { backgroundColor: 'rgba(15, 23, 42, 0.9)' }
+                    }
+                }
+            });
+
+            // Horizontal Bar Chart - Roadmap
+            const ctxRoadmap = document.getElementById('roadmapChart').getContext('2d');
+            new Chart(ctxRoadmap, {
+                type: 'bar',
+                data: {
+                    labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5', 'Week 6'],
+                    datasets: [
+                        {
+                            label: '코어 엔진 & 시스템',
+                            data: [100, 40, 0, 0, 0, 0],
+                            backgroundColor: '#94a3b8' // slate
+                        },
+                        {
+                            label: '콘텐츠 구현 (무기/적)',
+                            data: [0, 80, 60, 20, 50, 0],
+                            backgroundColor: '#0ea5e9' // sky
+                        },
+                        {
+                            label: '노드 시스템 & 기믹',
+                            data: [0, 0, 80, 40, 0, 0],
+                            backgroundColor: '#9333ea' // purple
+                        },
+                        {
+                            label: '폴리싱 & 버그 수정',
+                            data: [0, 0, 0, 80, 60, 100],
+                            backgroundColor: '#10b981' // emerald
+                        }
+                    ]
+                },
+                options: {
+                    indexAxis: 'y', // Make it horizontal
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: { stacked: true, max: 100, ticks: { display: false }, grid: { display: false } },
+                        y: { stacked: true, grid: { color: 'rgba(226, 232, 240, 0.5)' } }
+                    },
+                    plugins: {
+                        legend: { position: 'top', labels: { usePointStyle: true, boxWidth: 8, font:{size: 11} } },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.dataset.label + ' (작업량 비율)';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>
