@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyber-Breach: Data Core - 플레이 데모</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Noto Sans KR', sans-serif; background-color: #0f172a; }
+        .font-mono { font-family: 'Share Tech Mono', monospace; }
+        canvas { background-color: #1e293b; border: 2px solid #334155; box-shadow: 0 0 20px rgba(6, 182, 212, 0.15); }
+    </style>
+</head>
+<body class="flex flex-col items-center justify-center min-h-screen p-4 text-slate-100 selection:bg-cyan-500/30">
+
+    <div class="w-full max-w-4xl mb-4 flex justify-between items-end">
+        <div>
+            <span class="text-xs font-mono text-cyan-400 font-bold tracking-widest">// DEPLOYED_PROTOTYPE_V1.0</span>
+            <h1 class="text-2xl font-black font-mono tracking-tight text-white">CYBER_BREACH: <span class="text-cyan-400">DATA_CORE</span></h1>
+        </div>
+        <div class="text-right text-xs text-slate-400 font-mono">
+            조작: <span class="bg-slate-800 px-1.5 py-0.5 rounded text-cyan-400 border border-slate-700">W A S D</span> 또는 <span class="bg-slate-800 px-1.5 py-0.5 rounded text-cyan-400 border border-slate-700">방향키</span>
+        </div>
+    </div>
+
+    <div class="relative w-full max-w-4xl bg-slate-900 rounded-xl p-4 border border-slate-800 flex flex-col md:flex-row gap-4">
+        
+        <div class="relative flex-1 flex justify-center items-center">
+            <canvas id="gameCanvas" width="600" height="450" class="rounded-lg max-w-full"></canvas>
+            
+            <div id="gameOverScreen" class="absolute inset-0 bg-slate-950/80 backdrop-blur-sm flex flex-col items-center justify-center hidden rounded-lg">
+                <h2 class="text-3xl font-black text-rose-500 tracking-wider mb-2 font-mono">SYSTEM_INTEGRITY_COMPROMISED</h2>
+                <p class="text-slate-400 mb-6 text-sm">코어가 파괴되어 메인프레임 연결이 끊어졌습니다.</p>
+                <button onclick="resetGame()" class="px-6 py-2 bg-rose-600 hover:bg-rose-500 font-bold rounded-lg border border-rose-400 transition-colors shadow-lg">재접속 시도</button>
+            </div>
+
+            <div id="gameClearScreen" class="absolute inset-0 bg-slate-950/80 backdrop-blur-sm flex flex-col items-center justify-center hidden rounded-lg">
+                <h2 class="text-3xl font-black text-cyan-400 tracking-wider mb-2 font-mono">BREACH_SUCCESSFUL</h2>
+                <p class="text-purple-300 mb-6 text-sm font-semibold">보안 노드 100% 해킹 완료! 데이터를 완벽히 탈취했습니다.</p>
+                <button onclick="resetGame()" class="px-6 py-2 bg-cyan-600 hover:bg-cyan-500 text-slate-950 font-bold rounded-lg border border-cyan-400 transition-colors shadow-lg">다음 코어 침투</button>
+            </div>
+
+            <div id="levelUpScreen" class="absolute inset-0 bg-slate-950/70 backdrop-blur-xs flex flex-col items-center justify-center hidden rounded-lg z-50">
+                <h2 class="text-2xl font-bold text-purple-400 font-mono tracking-widest mb-1">⚡ OVERCLOCK_TRIGGERED</h2>
+                <p class="text-xs text-slate-400 mb-6">시스템 확장을 위한 패키지를 선택하십시오.</p>
+                <div id="upgradeOptions" class="flex flex-col gap-3 w-4/5 max-w-md">
+                    </div>
+            </div>
+        </div>
+
+        <div class="w-full md:w-56 bg-slate-950/50 p-4 rounded-lg border border-slate-800 flex flex-col justify-between font-mono text-sm">
+            <div class="space-y-4">
+                <div class="border-b border-slate-800 pb-2">
+                    <span class="text-slate-500 block text-[10px]">CURRENT_STATUS</span>
+                    <div class="flex justify-between items-center mt-1">
+                        <span class="font-bold text-white">LV. <span id="hudLevel">1</span></span>
+                        <span class="text-xs text-slate-400"><span id="hudExp">0</span> / <span id="hudMaxExp">10</span> XP</span>
+                    </div>
+                    <div class="w-full bg-slate-800 h-1.5 rounded-full mt-1 overflow-hidden">
+                        <div id="hudExpBar" class="bg-gradient-to-r from-purple-500 to-cyan-400 h-full w-0"></div>
+                    </div>
+                </div>
+
+                <div>
+                    <span class="text-slate-500 block text-[10px]">INTEGRITY (HP)</span>
+                    <span class="font-bold text-rose-400 block mt-1 text-base"><span id="hudHp">100</span> / 100</span>
+                </div>
+
+                <div>
+                    <span class="text-purple-400 block text-[10px] font-bold">📡 CORE HACK PROGRESS</span>
+                    <span id="hudHackPercent" class="font-black text-xl text-purple-400 block mt-0.5">0%</span>
+                    <div class="text-[11px] text-slate-400 mt-1 leading-tight" id="hudHackStatus">
+                        점령 구역 외부: 대기 중
+                    </div>
+                </div>
+
+                <div class="border-t border-slate-800 pt-3">
+                    <span class="text-slate-500 block text-[10px] mb-2">ACTIVE_UPGRADES</span>
+                    <div class="space-y-1.5 text-xs">
+                        <div class="flex justify-between text-slate-300"><span>🔫 Bit-Gun (공격)</span><span class="text-cyan-400 font-bold">Lv.<span id="upGun">1</span></span></div>
+                        <div class="flex justify-between text-slate-300"><span>🔥 Firewall (잔해)</span><span class="text-cyan-400 font-bold">Lv.<span id="upFirewall">0</span></span></div>
+                        <div class="flex justify-between text-slate-300"><span>🧲 RAM (자석)</span><span class="text-cyan-400 font-bold">Lv.<span id="upMagnet">0</span></span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-[10px] text-slate-600 pt-4 border-t border-slate-900">
+                SYSTEM: ACTIVE<br>
+                SUB_NODE: SECURE_ALPHA<br>
+                PROTOTYPE ENGINE: CANVAS_2D
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // Game State Variables
+        let player, keys, enemies, projectiles, expCubes, firewalls;
+        let node, gameActive, score, level, exp, maxExp;
+        let lastSpawnTime, spawnInterval, lastShootTime, shootInterval;
+        let lastFirewallTime, firewallInterval;
+        
+        // Upgrade Multipliers
+        let stats = {
+            gunLevel: 1,
+            firewallLevel: 0,
+            magnetLevel: 0,
+            speed: 3,
+            magnetRange: 45,
+            shootCooldown: 600
+        };
+
+        const upgradeDatabase = [
+            { id: 'gun', name: 'Bit-Gun 펄스 강화', desc: '자동 추적 레이저의 발사 속도가 빨라집니다.', icon: '🔫' },
+            { id: 'firewall', name: 'Firewall 화염벽 설치', desc: '이동 경로에 적에게 피해를 주는 격자 잔해를 남깁니다.', icon: '🔥' },
+            { id: 'magnet', name: 'RAM 업그레이드 (자석)', desc: '경험치 큐브를 끌어당기는 하드웨어 수집 반경이 증가합니다.', icon: '🧲' },
+            { id: 'heal', name: 'Heatsink 방열 회복', desc: '시스템 무결성(체력)을 즉시 35만큼 복구합니다.', icon: '❤️' }
+        ];
+
+        // Init/Reset Game Loop setup
+        function init() {
+            player = { x: 100, y: 225, radius: 10, hp: 100, maxHp: 100 };
+            keys = {};
+            enemies = [];
+            projectiles = [];
+            expCubes = [];
+            firewalls = [];
+            
+            // Central Security Node setup
+            node = { x: 380, y: 225, radius: 75, progress: 0, isPlayerInside: false };
+            
+            level = 1; exp = 0; maxExp = 10;
+            gameActive = true;
+            spawnInterval = 1200; // ms
+            shootInterval = stats.shootCooldown;
+            firewallInterval = 1500;
+            
+            lastSpawnTime = performance.now();
+            lastShootTime = performance.now();
+            lastFirewallTime = performance.now();
+
+            // UI Reset
+            document.getElementById('gameOverScreen').classList.add('hidden');
+            document.getElementById('gameClearScreen').classList.add('hidden');
+            document.getElementById('levelUpScreen').classList.add('hidden');
+            updateHud();
+        }
+
+        // Control Inputs
+        window.addEventListener('keydown', e => keys[e.key.toLowerCase()] = true);
+        window.addEventListener('keyup', e => keys[e.key.toLowerCase()] = false);
+
+        function resetGame() {
+            stats = { gunLevel: 1, firewallLevel: 0, magnetLevel: 0, speed: 3, magnetRange: 45, shootCooldown: 600 };
+            init();
+        }
+
+        // Check if player is inside the circular node area
+        function checkNodeInclusion() {
+            let dist = Math.hypot(player.x - node.x, player.y - node.y);
+            node.isPlayerInside = dist <= node.radius;
+        }
+
+        // Handle Spawning Enemy types based on Plan
+        function spawnEnemy() {
+            let edge = Math.floor(Math.random() * 4);
+            let x, y;
+            if(edge === 0) { x = Math.random() * canvas.width; y = -20; }
+            else if(edge === 1) { x = canvas.width + 20; y = Math.random() * canvas.height; }
+            else if(edge === 2) { x = Math.random() * canvas.width; y = canvas.height + 20; }
+            else { x = -20; y = Math.random() * canvas.height; }
+
+            // 80% Tracker (Basic), 20% ICE Wall (Tanker)
+            let isTank = Math.random() > 0.8;
+            enemies.push({
+                x: x, y: y,
+                type: isTank ? 'ICE Wall' : 'Tracker',
+                radius: isTank ? 14 : 8,
+                speed: isTank ? 0.7 : 1.6,
+                hp: isTank ? 5 : 1,
+                color: isTank ? '#a855f7' : '#ef4444' // Purple vs Red
+            });
+        }
+
+        // Auto-targeting system logic (Closest Enemy)
+        function autoFire() {
+            if (enemies.length === 0) return;
+            let closest = null;
+            let minDist = Infinity;
+
+            enemies.forEach(enemy => {
+                let d = Math.hypot(enemy.x - player.x, enemy.y - player.y);
+                if (d < minDist) { minDist = d; closest = enemy; }
+            });
+
+            if (closest) {
+                let angle = Math.atan2(closest.y - player.y, closest.x - player.x);
+                projectiles.push({
+                    x: player.x, y: player.y,
+                    vx: Math.cos(angle) * 6, vy: Math.sin(angle) * 6,
+                    radius: 4, damage: 1
+                });
+            }
+        }
+
+        function triggerLevelUp() {
+            gameActive = false;
+            document.getElementById('levelUpScreen').classList.remove('hidden');
+            
+            // Randomly choose 3 options from database
+            let shuffled = [...upgradeDatabase].sort(() => 0.5 - Math.random());
+            let selection = shuffled.slice(0, 3);
+            
+            let container = document.getElementById('upgradeOptions');
+            container.innerHTML = '';
+            
+            selection.forEach(opt => {
+                let btn = document.createElement('button');
+                btn.className = "w-full text-left bg-slate-900/90 hover:bg-slate-800 p-3 rounded-lg border border-slate-700 hover:border-purple-500 transition-all flex items-center gap-3 font-mono";
+                btn.innerHTML = `
+                    <span class="text-xl p-1.5 bg-slate-800 rounded">${opt.icon}</span>
+                    <div class="flex-1">
+                        <div class="text-sm font-bold text-white">${opt.name}</div>
+                        <div class="text-[11px] text-slate-400 mt-0.5">${opt.desc}</div>
+                    </div>
+                `;
+                btn.onclick = () => applyUpgrade(opt.id);
+                container.appendChild(btn);
+            });
+        }
+
+        function applyUpgrade(id) {
+            if (id === 'gun') {
+                stats.gunLevel++;
+                stats.shootCooldown = Math.max(250, stats.shootCooldown - 100);
+            } else if (id === 'firewall') {
+                stats.firewallLevel++;
+            } else if (id === 'magnet') {
+                stats.magnetLevel++;
+                stats.magnetRange += 30;
+            } else if (id === 'heal') {
+                player.hp = Math.min(player.maxHp, player.hp + 35);
+            }
+            
+            document.getElementById('levelUpScreen').classList.add('hidden');
+            gameActive = true;
+            updateHud();
+            // Prevents immediate delta spike
+            lastShootTime = performance.now();
+            lastSpawnTime = performance.now();
+        }
+
+        function updateHud() {
+            document.getElementById('hudLevel').innerText = level;
+            document.getElementById('hudExp').innerText = exp;
+            document.getElementById('hudMaxExp').innerText = maxExp;
+            document.getElementById('hudHp').innerText = Math.max(0, player.hp);
+            document.getElementById('hudExpBar').style.width = `${(exp / maxExp) * 100}%`;
+            document.getElementById('hudHackPercent').innerText = `${Math.floor(node.progress)}%`;
+            
+            document.getElementById('upGun').innerText = stats.gunLevel;
+            document.getElementById('upFirewall').innerText = stats.firewallLevel;
+            document.getElementById('upMagnet').innerText = stats.magnetLevel;
+
+            let statusText = document.getElementById('hudHackStatus');
+            if (node.progress >= 100) {
+                statusText.innerText = "해킹 프로토콜 성공 완료";
+                statusText.className = "text-[11px] text-cyan-400 font-bold";
+            } else if (node.isPlayerInside) {
+                statusText.innerText = "⚡ 다운로드 중... (적 위험도 급증!)";
+                statusText.className = "text-[11px] text-purple-400 font-bold animate-pulse";
+            } else {
+                statusText.innerText = "점령 구역 외부: 데이터 대기 중";
+                statusText.className = "text-[11px] text-slate-400";
+            }
+        }
+
+        // Primary Engine Loop
+        function update(currentTime) {
+            if (!gameActive) { requestAnimationFrame(update); return; }
+
+            // 1. Handling Movements
+            let mx = 0; let my = 0;
+            if (keys['w'] || keys['arrowup']) my = -1;
+            if (keys['s'] || keys['arrowdown']) my = 1;
+            if (keys['a'] || keys['arrowleft']) mx = -1;
+            if (keys['d'] || keys['arrowright']) mx = 1;
+
+            if (mx !== 0 && my !== 0) { mx *= 0.707; my *= 0.707; } // Vector normalisation
+            player.x = Math.max(player.radius, Math.min(canvas.width - player.radius, player.x + mx * stats.speed));
+            player.y = Math.max(player.radius, Math.min(canvas.height - player.radius, player.y + my * stats.speed));
+
+            // 2. Node Proximity Check & Progress Logic
+            checkNodeInclusion();
+            let dynamicSpawnInterval = spawnInterval;
+            if (node.isPlayerInside && node.progress < 100) {
+                node.progress += 0.08; // Hacking speed ticker
+                dynamicSpawnInterval = spawnInterval * 0.45; // Overclock spawns (Risk factor)
+                if (node.progress >= 100) {
+                    node.progress = 100;
+                    gameActive = false;
+                    document.getElementById('gameClearScreen').classList.remove('hidden');
+                }
+                updateHud();
+            }
+
+            // 3. Conditional Timed Weapon Spawns & Automations
+            if (currentTime - lastSpawnTime > dynamicSpawnInterval) {
+                spawnEnemy(); lastSpawnTime = currentTime;
+            }
+            if (currentTime - lastShootTime > stats.shootCooldown) {
+                autoFire(); lastShootTime = currentTime;
+            }
+            // Active Firewall drops
+            if (stats.firewallLevel > 0 && currentTime - lastFirewallTime > firewallInterval) {
+                firewalls.push({ x: player.x, y: player.y, size: 24 + (stats.firewallLevel * 4), duration: 4000, spawnTime: currentTime });
+                lastFirewallTime = currentTime;
+            }
+
+            // 4. Update Game Entity Positions & Life cycles
+            projectiles.forEach((p, idx) => {
+                p.x += p.vx; p.y += p.vy;
+                if (p.x < 0 || p.x > canvas.width || p.y < 0 || p.y > canvas.height) projectiles.splice(idx, 1);
+            });
+
+            // Filtering out expired firewalls
+            firewalls = firewalls.filter(f => currentTime - f.spawnTime < f.duration);
+
+            enemies.forEach((enemy, eIdx) => {
+                // Tracking Vector heading to player
+                let angle = Math.atan2(player.y - enemy.y, player.x - enemy.x);
+                enemy.x += Math.cos(angle) * enemy.speed;
+                enemy.y += Math.sin(angle) * enemy.speed;
+
+                // Firewalls collision with enemies
+                firewalls.forEach(f => {
+                    if (enemy.x > f.x - f.size/2 && enemy.x < f.x + f.size/2 && enemy.y > f.y - f.size/2 && enemy.y < f.y + f.size/2) {
+                        enemy.hp -= 0.05; // DoT tick
+                    }
+                });
+
+                // Bullets collision
+                projectiles.forEach((p, pIdx) => {
+                    if (Math.hypot(p.x - enemy.x, p.y - enemy.y) < p.radius + enemy.radius) {
+                        enemy.hp -= p.damage;
+                        projectiles.splice(pIdx, 1);
+                    }
+                });
+
+                // Check death conditions for Enemy entities
+                if (enemy.hp <= 0) {
+                    enemies.splice(eIdx, 1);
+                    expCubes.push({ x: enemy.x, y: enemy.y, value: 1, radius: 4 });
+                    return;
+                }
+
+                // Collision Player vs Enemy
+                if (Math.hypot(player.x - enemy.x, player.y - enemy.y) < player.radius + enemy.radius) {
+                    player.hp -= enemy.type === 'ICE Wall' ? 0.4 : 0.25; // Continuous touch damage tick
+                    updateHud();
+                    if (player.hp <= 0) {
+                        gameActive = false;
+                        document.getElementById('gameOverScreen').classList.remove('hidden');
+                    }
+                }
+            });
+
+            // Magnet item attractors loop
+            expCubes.forEach((cube, cIdx) => {
+                let dist = Math.hypot(cube.x - player.x, cube.y - player.y);
+                if (dist <= stats.magnetRange) {
+                    let angle = Math.atan2(player.y - cube.y, player.x - cube.x);
+                    cube.x += Math.cos(angle) * 4.5;
+                    cube.y += Math.sin(angle) * 4.5;
+                }
+
+                if (dist < player.radius + cube.radius) {
+                    expCubes.splice(cIdx, 1);
+                    exp += cube.value;
+                    if (exp >= maxExp) {
+                        level++; exp = 0; maxExp = Math.floor(maxExp * 1.5);
+                        triggerLevelUp();
+                    }
+                    updateHud();
+                }
+            });
+
+            // 5. Drawing Phase Rendering
+            draw();
+            requestAnimationFrame(update);
+        }
+
+        // Screen Render Layer
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Tech Grid background pattern
+            ctx.strokeStyle = '#334155'; ctx.lineWidth = 0.5;
+            let gridSize = 30;
+            for (let x = 0; x < canvas.width; x += gridSize) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, canvas.height); ctx.stroke(); }
+            for (let y = 0; y < canvas.height; y += gridSize) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(canvas.width, y); ctx.stroke(); }
+
+            // Security Node Visual Ring
+            ctx.lineWidth = 2;
+            if (node.progress >= 100) { ctx.strokeStyle = '#22d3ee'; ctx.fillStyle = 'rgba(6, 182, 212, 0.08)'; }
+            else if (node.isPlayerInside) { ctx.strokeStyle = '#a855f7'; ctx.fillStyle = 'rgba(168, 85, 247, 0.15)'; }
+            else { ctx.strokeStyle = '#64748b'; ctx.fillStyle = 'rgba(100, 116, 139, 0.03)'; }
+            
+            ctx.setLineDash([5, 5]); ctx.beginPath(); ctx.arc(node.x, node.y, node.radius, 0, Math.PI * 2); ctx.fill(); ctx.stroke(); ctx.setLineDash([]);
+            
+            // Core Text indicators inside Node
+            ctx.fillStyle = node.progress >= 100 ? '#22d3ee' : (node.isPlayerInside ? '#c084fc' : '#94a3b8');
+            ctx.font = "bold 10px 'Share Tech Mono'"; ctx.textAlign = "center";
+            ctx.fillText(node.progress >= 100 ? "CORE_DECRYPTED" : "DATA_NODE_SECURE", node.x, node.y - 4);
+            ctx.fillText(`${Math.floor(node.progress)}%`, node.x, node.y + 10);
+
+            // Firewall Hazard grids
+            firewalls.forEach(f => {
+                ctx.fillStyle = 'rgba(239, 68, 68, 0.25)'; ctx.strokeStyle = '#ef4444'; ctx.lineWidth = 1;
+                ctx.fillRect(f.x - f.size/2, f.y - f.size/2, f.size, f.size);
+                ctx.strokeRect(f.x - f.size/2, f.y - f.size/2, f.size, f.size);
+            });
+
+            // Player Node Model
+            ctx.fillStyle = '#22d3ee'; ctx.shadowBlur = 10; ctx.shadowColor = '#22d3ee';
+            ctx.beginPath(); ctx.arc(player.x, player.y, player.radius, 0, Math.PI * 2); ctx.fill();
+            ctx.shadowBlur = 0; // Reset canvas shadows
+
+            // Shoot range or magnet line indicators if inside node
+            if (stats.magnetLevel > 0) {
+                ctx.strokeStyle = 'rgba(34, 211, 238, 0.15)'; ctx.lineWidth = 1;
+                ctx.beginPath(); ctx.arc(player.x, player.y, stats.magnetRange, 0, Math.PI * 2); ctx.stroke();
+            }
+
+            // Draw Entities (Enemies, Projectiles, Exp)
+            enemies.forEach(e => {
+                ctx.fillStyle = e.color; ctx.beginPath();
+                if(e.type === 'ICE Wall') {
+                    ctx.rect(e.x - e.radius, e.y - e.radius, e.radius * 2, e.radius * 2); ctx.fill();
+                } else {
+                    ctx.arc(e.x, e.y, e.radius, 0, Math.PI * 2); ctx.fill();
+                }
+            });
+
+            ctx.fillStyle = '#f43f5e';
+            projectiles.forEach(p => { ctx.beginPath(); ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2); ctx.fill(); });
+
+            ctx.fillStyle = '#4ade80'; ctx.shadowBlur = 4; ctx.shadowColor = '#4ade80';
+            expCubes.forEach(c => { ctx.fillRect(c.x - c.radius, c.y - c.radius, c.radius * 2, c.radius * 2); });
+            ctx.shadowBlur = 0;
+        }
+
+        // Trigger Boot Sequencing
+        init();
+        requestAnimationFrame(update);
+    </script>
+</body>
+</html>
