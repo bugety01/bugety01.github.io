@@ -1,194 +1,30 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Cyber-Breach: Data Core 에셋 작업 가이드</title>
-  <style>
-    :root {
-      --bg: #0b1020;
-      --panel: #121a2f;
-      --panel-2: #0f1527;
-      --text: #e8eefc;
-      --muted: #b4bfd8;
-      --accent: #63e6ff;
-      --accent2: #ff48d6;
-      --accent3: #7dff82;
-      --line: #23304e;
-      --code: #0a0f1d;
-      --warn: #ffcc66;
-    }
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      font-family: "Pretendard", "Noto Sans KR", Arial, sans-serif;
-      background: linear-gradient(180deg, #08101d 0%, #0b1020 100%);
-      color: var(--text);
-      line-height: 1.65;
-    }
-    .wrap { width: min(1080px, 92vw); margin: 0 auto; padding: 40px 0 80px; }
-    .hero {
-      background: radial-gradient(circle at top right, rgba(99,230,255,.12), transparent 28%), radial-gradient(circle at top left, rgba(255,72,214,.12), transparent 24%), var(--panel);
-      border: 1px solid var(--line); border-radius: 22px; padding: 28px; box-shadow: 0 16px 40px rgba(0,0,0,.25); margin-bottom: 22px;
-    }
-    h1, h2, h3 { line-height: 1.25; }
-    h1 { margin: 0 0 10px; font-size: 34px; }
-    h2 { margin-top: 34px; padding-top: 14px; border-top: 1px solid var(--line); font-size: 24px; }
-    h3 { margin-top: 26px; font-size: 18px; color: var(--accent); }
-    p, li, td, th { font-size: 15px; }
-    .muted { color: var(--muted); }
-    .lead { font-size: 16px; }
-    .badge { display: inline-block; padding: 5px 10px; margin: 0 8px 8px 0; border-radius: 999px; border: 1px solid var(--line); background: rgba(255,255,255,.03); color: var(--muted); font-size: 13px; }
-    .panel { background: var(--panel-2); border: 1px solid var(--line); border-radius: 18px; padding: 18px 20px; margin: 18px 0; }
-    pre { margin: 0; white-space: pre-wrap; word-break: break-word; background: var(--code); border: 1px solid #1d2741; border-radius: 14px; padding: 16px; color: #f2f7ff; font-size: 13.5px; line-height: 1.6; overflow: hidden; }
-    code { font-family: "JetBrains Mono", "Consolas", monospace; }
-    ul, ol { padding-left: 20px; }
-    table { width: 100%; border-collapse: collapse; margin: 12px 0 18px; overflow: hidden; border-radius: 14px; border: 1px solid var(--line); background: rgba(255,255,255,.02); }
-    th, td { border-bottom: 1px solid var(--line); padding: 12px 12px; vertical-align: top; text-align: left; }
-    th { background: rgba(99,230,255,.08); color: #f5fbff; font-weight: 700; }
-    tr:last-child td { border-bottom: none; }
-    .cols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
-    .mini { background: rgba(255,255,255,.02); border: 1px solid var(--line); border-radius: 16px; padding: 16px; }
-    .tagline { color: var(--accent); font-weight: 700; margin-bottom: 6px; }
-    .warning { border-left: 4px solid var(--warn); padding: 10px 14px; background: rgba(255,204,102,.08); border-radius: 10px; }
-    a { color: var(--accent); text-decoration: none; }
-    .ref li { margin-bottom: 8px; }
-    .footer { margin-top: 36px; font-size: 13px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 20px; }
-    @media (max-width: 820px) { .cols { grid-template-columns: 1fr; } h1 { font-size: 28px; } h2 { font-size: 22px; } }
-    @media print {
-      body { background: #fff; color: #111; }
-      .wrap { width: 100%; padding: 0; }
-      .hero, .panel, .mini, table, pre { background: #fff !important; color: #111 !important; border-color: #ccc !important; box-shadow: none !important; }
-      a { color: #111; text-decoration: underline; }
-      .muted, .footer { color: #444 !important; }
-      .badge { color: #333; border-color: #ccc; }
-      .warning { background: #fff7e4; border-left-color: #b58100; }
-      h2 { page-break-after: avoid; }
-      pre, table, .panel, .mini { page-break-inside: avoid; }
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="description" content="Cyber-Breach: Data Core 전체 에셋 92종 적용 형태와 GPT Image 2 프롬프트 카탈로그" />
+<title>Cyber-Breach: Data Core — 전체 에셋 프롬프트 가이드</title>
+<style>
+:root{--bg:#070b15;--panel:#10182b;--panel2:#0c1323;--line:#263553;--text:#eef4ff;--muted:#aebbd2;--cyan:#5ee8ff;--magenta:#ff4bd8;--orange:#ffb15a;--shadow:0 18px 48px rgba(0,0,0,.3)}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:Pretendard,"Noto Sans KR",system-ui,sans-serif;background:radial-gradient(circle at 80% -10%,rgba(94,232,255,.12),transparent 30%),radial-gradient(circle at 10% 0%,rgba(255,75,216,.09),transparent 26%),var(--bg);color:var(--text);line-height:1.65}button{font:inherit}.wrap{width:min(1180px,94vw);margin:auto;padding:28px 0 80px}.hero{background:linear-gradient(145deg,rgba(20,30,53,.98),rgba(9,15,29,.96));border:1px solid var(--line);border-radius:24px;padding:30px;box-shadow:var(--shadow)}h1,h2,h3{line-height:1.24}h1{font-size:clamp(30px,5vw,52px);margin:0 0 12px;letter-spacing:-.04em}h2{font-size:clamp(24px,3vw,34px);margin:54px 0 16px;padding-top:12px;border-top:1px solid var(--line)}h3{font-size:19px;margin:0 0 6px}.lead{font-size:17px;color:#d8e3f6;max-width:850px}.meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}.badge{border:1px solid var(--line);background:rgba(255,255,255,.035);border-radius:999px;padding:6px 10px;color:var(--muted);font-size:13px}.notice{margin:18px 0;padding:14px 16px;border-left:4px solid var(--orange);background:rgba(255,177,90,.08);border-radius:12px}.panel{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:20px;margin:16px 0}pre{margin:0;white-space:pre-wrap;word-break:break-word;background:#080d19;border:1px solid #1d2942;border-radius:14px;padding:16px;color:#f5f8ff;font:13px/1.65 "JetBrains Mono",Consolas,monospace}.toolbar{position:sticky;top:0;z-index:20;margin:18px 0;background:rgba(7,11,21,.88);backdrop-filter:blur(14px);border:1px solid var(--line);border-radius:16px;padding:12px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}.search{flex:1;min-width:220px;background:#0b1221;border:1px solid var(--line);border-radius:12px;padding:11px 13px;color:var(--text)}.navbtn,.copybtn{border:1px solid var(--line);background:#111b30;color:var(--text);padding:9px 12px;border-radius:10px;cursor:pointer}.catnav{display:flex;gap:8px;overflow:auto;padding-bottom:4px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.card{background:linear-gradient(160deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:18px;padding:17px;display:flex;flex-direction:column;gap:10px}.card.hidden{display:none}.cardhead{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.num{font:12px "JetBrains Mono",monospace;color:var(--cyan);border:1px solid rgba(94,232,255,.25);padding:4px 7px;border-radius:8px}.role{color:var(--magenta);font-size:13px;font-weight:700}.apply{color:#d4def0;font-size:14px}.keywords{display:flex;flex-wrap:wrap;gap:6px}.keywords code{background:#08101d;border:1px solid #22304d;color:#bff6ff;border-radius:8px;padding:4px 7px;font-size:12px}.promptbox{background:#080d19;border:1px solid #1d2942;border-radius:12px;padding:12px;font:12px/1.55 "JetBrains Mono",Consolas,monospace;color:#dce9ff;max-height:180px;overflow:auto}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:auto}.sectionhead{display:flex;justify-content:space-between;align-items:end;gap:16px}.sectiondesc{color:var(--muted);max-width:850px}.count{color:var(--cyan);font:13px "JetBrains Mono",monospace;white-space:nowrap}table{width:100%;border-collapse:collapse;background:var(--panel2);border:1px solid var(--line)}th,td{padding:11px;border-bottom:1px solid var(--line);text-align:left;font-size:14px}th{background:rgba(94,232,255,.07)}.cols{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.small,.footer{color:var(--muted);font-size:13px}.footer{margin-top:48px;border-top:1px solid var(--line);padding-top:20px}.toast{position:fixed;right:18px;bottom:18px;background:#13213b;border:1px solid var(--cyan);padding:11px 14px;border-radius:12px;opacity:0;transition:.2s}.toast.show{opacity:1}@media(max-width:820px){.grid,.cols{grid-template-columns:1fr}.hero{padding:22px}}
+</style>
 </head>
-<body>
-  <div class="wrap">
-    <section class="hero">
-      <h1>Cyber-Breach: Data Core 에셋 작업 가이드</h1>
-      <p class="lead">에셋 담당자가 바로 읽고 써먹게 만든 정리본. 맨 위에는 <strong>공통 프롬프트</strong>, 그다음에 <strong>적용 대상</strong>, <strong>초안 뽑는 팁</strong>, <strong>바이브 코딩용 에셋 제작 흐름</strong>, <strong>참고 사이트</strong> 순서로 넣었다.</p>
-      <div>
-        <span class="badge">탑다운 3/4 시점</span>
-        <span class="badge">2D 서바이버라이크</span>
-        <span class="badge">사이버 침투 세계관</span>
-        <span class="badge">48~64px 가독성 우선</span>
-        <span class="badge">실루엣 구분 최우선</span>
-      </div>
-    </section>
-
-    <h2>1. 공통 프롬프트</h2>
-    <div class="panel">
-      <div class="tagline">기본 공통 프롬프트</div>
-      <pre><code>Create a production-ready 2D game asset concept sheet for [SUBJECT].
+<body><div class="wrap">
+<section class="hero"><h1>Cyber-Breach: Data Core<br>전체 에셋 프롬프트 가이드</h1><p class="lead">에셋 담당자가 항목을 빼먹지 않고 바로 제작하도록 만든 전수 카탈로그다. 공통 프롬프트를 위에 고정하고, 게임 콘텐츠 <strong>92개</strong>를 항목별로 나눠 적용 형태·구분 포인트·5개 키워드·GPT Image 2 복붙 프롬프트를 전부 넣었다.</p><div class="meta"><span class="badge">총 92개</span><span class="badge">플레이어 3</span><span class="badge">적 12</span><span class="badge">보스 4</span><span class="badge">노드 7</span><span class="badge">기본 무기 18</span><span class="badge">진화 무기 12</span><span class="badge">패시브 14</span><span class="badge">바이옴 4</span><span class="badge">업적 6</span><span class="badge">UI 12</span></div></section>
+<div class="toolbar"><input id="search" class="search" placeholder="에셋명·역할·키워드 검색"><button class="navbtn" onclick="copyCommon()">공통 프롬프트 복사</button><div id="catnav" class="catnav"></div></div>
+<h2>1. 공통 프롬프트</h2><div class="panel"><pre id="commonPrompt">Create a production-ready 2D game asset concept sheet for [SUBJECT].
 
 Top-down three-quarter view, cyber intrusion survivorlike game, bold readable silhouette, minimal geometric cyberpunk design, clean vector-like rendering, controlled neon glow, dark internal shadows, no text, no logo, no UI frame.
 
-Show:
-1. idle sprite,
-2. movement pose,
-3. attack pose,
-4. damaged pose,
-5. simplified minimap icon.
-
 The asset must remain recognizable at 48–64 pixels.
 Use clear shape language and avoid excessive tiny details.
-Neutral transparent background, evenly spaced concept sheet.</code></pre>
-    </div>
-
-    <div class="cols">
-      <div class="mini"><div class="tagline">플레이어/침투 진영 추가 문장</div><pre><code>Intruder faction design language: asymmetrical triangular forms, saturated magenta, violet or lime accents, flowing glitch trails, fast agile appearance.</code></pre></div>
-      <div class="mini"><div class="tagline">적/보안 진영 추가 문장</div><pre><code>Security faction design language: rigid symmetry, white and pale cyan armor, square and shield-based construction, hostile orange warning lights.</code></pre></div>
-    </div>
-
-    <div class="cols">
-      <div class="mini"><div class="tagline">노드용 추가 문장</div><pre><code>Shared node structure: hexagonal floor platform, neutral gunmetal chassis, circular capture boundary, central holographic device, clear top-down readability.</code></pre></div>
-      <div class="mini"><div class="tagline">무기/VFX용 추가 문장</div><pre><code>Focus on projectile shape, trail, impact effect, and attack readability rather than character detail. Keep the silhouette readable even when scaled small.</code></pre></div>
-    </div>
-
-    <h2>2. 적용 대상</h2>
-    <p class="muted">레포 기준으로 지금 구분해서 작업해야 할 대상들. 한 번에 다 하지 말고, 아래 우선순위로 나눠서 가는 게 맞다.</p>
-    <table>
-      <thead><tr><th>분류</th><th>수량</th><th>우선 작업 포인트</th></tr></thead>
-      <tbody>
-        <tr><td>플레이어 프로그램</td><td>3</td><td>게임의 정체성. 먼저 뽑아서 전체 스타일 앵커로 삼기</td></tr>
-        <tr><td>일반/엘리트 적</td><td>12</td><td>실루엣 충돌 방지. 빠른놈/원거리/방패형이 즉시 구분돼야 함</td></tr>
-        <tr><td>보스</td><td>4</td><td>화면 장악감, 약점 위치, 공격 방향 읽힘이 핵심</td></tr>
-        <tr><td>보안 노드</td><td>7</td><td>공통 기단 + 중앙 심볼만 바꿔서 통일감 유지</td></tr>
-        <tr><td>기본 무기</td><td>18</td><td>투사체, 장판, 빔, 소환체, 디버프 마커를 분리해서 설계</td></tr>
-        <tr><td>진화 무기</td><td>12</td><td>기본 무기의 상위 형태처럼 보여야 함</td></tr>
-        <tr><td>바이옴</td><td>4</td><td>배경·타일·오브젝트 세트로 묶기</td></tr>
-        <tr><td>UI/HUD</td><td>1세트</td><td>체력·경험치·해킹 게이지·보스바·아이콘 통일</td></tr>
-      </tbody>
-    </table>
-
-    <div class="warning"><strong>작업 순서 추천:</strong> 플레이어 3종 → 기본 적 4~6종 → 노드 7종 → 핵심 무기/VFX → 보스 4종 → 바이옴 → UI. 이유는 간단함. 먼저 움직이는 애들이 읽혀야 테스트가 돌아가고, 그다음 목표물과 공격 이펙트를 붙이면 게임 맛이 산다.</div>
-
-    <h2>3. 이미지 초안 에셋으로 뽑는 팁</h2>
-    <div class="cols">
-      <div class="mini"><h3>3-1. 포스터 말고 “콘셉트 시트”</h3><ul><li>idle / move / attack / damaged / minimap icon을 같이 뽑기</li><li>배경은 투명 또는 무채색</li><li>게임용이면 one asset per sheet</li></ul></div>
-      <div class="mini"><h3>3-2. 48~64px 검사</h3><ul><li>축소했을 때 누군지 보이는가가 핵심</li><li>실루엣, 주무기 위치, 방패 유무가 한눈에 보여야 함</li><li>색만 다르고 모양이 같으면 실제 플레이에서 뭉개짐</li></ul></div>
-      <div class="mini"><h3>3-3. 색보다 형태</h3><ul><li>플레이어: 삼각형, 비대칭, 날렵함</li><li>보안 적: 사각형, 대칭, 경직됨</li><li>노드: 공통 육각 기단 + 중앙 장치</li><li>보스: 움직이는 시설물처럼 크게</li></ul></div>
-      <div class="mini"><h3>3-4. 프롬프트 필수어</h3><ul><li>top-down three-quarter view</li><li>transparent background</li><li>readable silhouette at 48–64 pixels</li><li>no text, no logo, no poster layout</li><li>concept sheet / sprite concept / minimap icon</li></ul></div>
-    </div>
-
-    <h2>4. 바이브 코딩식으로 게임 에셋 만드는 법</h2>
-    <p>“그림부터 완벽하게 다 만들고 나중에 넣자”로 가면 오래 끈다. 바이브 코딩 쪽은 보통 <strong>빠른 프로토타입 → 빈칸 메우기 → 교체 반복</strong>이 맞다.</p>
-    <div class="panel"><h3>4-1. 1차는 ‘가짜 완성’으로 빨리</h3><ol><li><strong>역할 고정</strong>: 플레이어인지, 원거리 적인지, 장판인지 먼저 정하기</li><li><strong>AI로 초안 3개</strong>: 한 대상당 3안 정도만 비교</li><li><strong>앵커 1개 선택</strong>: 게임과 맞는 1안을 기준으로 확장</li><li><strong>같은 톤으로 확장</strong>: 나머지 적·노드·무기를 이어서 제작</li><li><strong>코드에 바로 넣기</strong>: 실제 크기에서 안 읽히면 탈락</li></ol></div>
-    <div class="panel"><h3>4-2. 이름 규칙</h3><pre><code>assets/
-  characters/
-  enemies/
-  bosses/
-  nodes/
-  weapons/
-  vfx/
-  ui/</code></pre><ul><li>파일명은 영문 snake_case로 고정</li><li>역할별 폴더를 먼저 나눠 코드 매칭을 단순화</li></ul></div>
-    <div class="panel"><h3>4-3. 교체 가능한 임시본</h3><ul><li>초안 에셋을 먼저 넣고 상위 버전으로 갈아끼우기</li><li>UI 아이콘, 투사체, 장판은 임시본으로도 테스트 가능</li><li>보스·플레이어는 스타일 앵커, 잡몹은 템플릿화</li></ul></div>
-    <div class="panel"><h3>4-4. 실제 스프라이트화</h3><ul><li>AI 이미지는 콘셉트 참조용으로 쓰고 Aseprite/Piskel에서 정리</li><li>히트박스는 그림이 아니라 코드에서 관리</li><li>장판·빔·경고선은 타격감보다 예고성 우선</li><li>애니메이션은 처음부터 길게 말고 4~8프레임</li></ul></div>
-
-    <h2>5. 추천 툴 / 사이트</h2>
-    <div class="cols">
-      <div class="mini"><h3>Aseprite</h3><p>스프라이트 정리, 프레임 관리, 스프라이트 시트 출력에 강함.</p></div>
-      <div class="mini"><h3>Piskel</h3><p>브라우저에서 바로 쓰는 무료 animated sprites &amp; pixel art 에디터.</p></div>
-      <div class="mini"><h3>Kenney Assets</h3><p>2D, 3D, UI, Audio, Pixel, Textures 등 프로토타입용 자산을 찾기 좋음.</p></div>
-      <div class="mini"><h3>OpenGameArt</h3><p>에셋 라이브러리. CC0, CC-BY, CC-BY-SA 등 라이선스 확인 필수.</p></div>
-      <div class="mini"><h3>Godot / Phaser</h3><p>스프라이트 시트, 애니메이션, 웹게임 적용 흐름을 확인하기 좋음.</p></div>
-      <div class="mini"><h3>OpenAI Image Guide</h3><p>생성과 편집 흐름을 함께 활용해 한 번 뽑은 안을 계속 고쳐 쓰는 방식이 유리함.</p></div>
-    </div>
-
-    <h2>6. 유튜브 / 검색 키워드</h2>
-    <table>
-      <thead><tr><th>목적</th><th>추천 검색어</th></tr></thead>
-      <tbody>
-        <tr><td>Aseprite 기본기</td><td><code>aseprite top down sprite tutorial</code></td></tr>
-        <tr><td>픽셀 애니메이션</td><td><code>pixel art idle run attack animation tutorial</code></td></tr>
-        <tr><td>서바이버류 VFX</td><td><code>2d game particles slash beam effect tutorial</code></td></tr>
-        <tr><td>Godot 적용</td><td><code>godot sprite sheet animatedsprite2d tutorial</code></td></tr>
-        <tr><td>Phaser 적용</td><td><code>phaser sprite animation tutorial</code></td></tr>
-        <tr><td>AI 에셋 워크플로우</td><td><code>ai game asset workflow concept sheet sprite pipeline</code></td></tr>
-      </tbody>
-    </table>
-
-    <h2>7. 빠른 체크리스트</h2>
-    <div class="panel"><ul><li>한 에셋당 역할이 명확한가?</li><li>48px로 줄여도 누군지 보이는가?</li><li>배경 없이 바로 추출 가능한가?</li><li>다른 적과 실루엣이 겹치지 않는가?</li><li>노드들이 공통 기단을 공유하는가?</li><li>무기는 투사체와 이펙트 가독성이 우선인가?</li><li>라이선스 확인이 끝났는가?</li></ul></div>
-
-    <h2>8. 참고 링크</h2>
-    <ol class="ref">
-      <li><a href="https://www.aseprite.org/docs/sprite-sheet/">Aseprite Docs — Sprite sheets</a></li>
-      <li><a href="https://www.piskelapp.com/">Piskel</a></li>
-      <li><a href="https://kenney.nl/assets">Kenney Assets</a></li>
-      <li><a href="https://opengameart.org/content/faq">OpenGameArt FAQ</a></li>
-      <li><a href="https://docs.godotengine.org/en/stable/tutorials/2d/2d_sprite_animation.html">Godot Docs — 2D sprite animation</a></li>
-      <li><a href="https://phaser.io/tutorials/making-your-first-phaser-game">Phaser — Making your first game</a></li>
-      <li><a href="https://developers.openai.com/api/docs/guides/image-generation">OpenAI — Image generation guide</a></li>
-    </ol>
-
-    <div class="footer"><p>공개 공유용 문서. HTML 프리뷰와 PDF 버전을 함께 제공한다.</p></div>
-  </div>
-</body>
-</html>
+Neutral transparent background, evenly spaced concept sheet.</pre></div>
+<div class="cols"><div class="panel"><h3>플레이어·침투 진영</h3><pre>Intruder faction design language: asymmetrical triangular forms, saturated magenta, violet or lime accents, flowing glitch trails, fast agile appearance.</pre></div><div class="panel"><h3>적·보안 진영</h3><pre>Security faction design language: rigid symmetry, white and pale cyan armor, square and shield-based construction, hostile orange warning lights.</pre></div><div class="panel"><h3>노드 공통 구조</h3><pre>Shared node structure: hexagonal floor platform, neutral gunmetal chassis, circular capture boundary, central holographic device, clear top-down readability.</pre></div><div class="panel"><h3>무기·VFX 공통 구조</h3><pre>Focus on projectile shape, trail, impact effect, telegraph boundary, and attack readability. Avoid poster composition and character-focused illustration.</pre></div></div>
+<div class="notice"><strong>사용법:</strong> 아래 카드의 “전체 프롬프트 복사”를 누르면 해당 에셋 전용 요구사항이 통째로 복사된다. 초안은 대상당 3안만 뽑고 48px 축소 테스트에서 가장 잘 읽히는 안을 남겨라.</div>
+<h2>2. 적용 규격과 제작 순서</h2><table><thead><tr><th>대상</th><th>생성 원본</th><th>게임 크기</th><th>확인할 것</th></tr></thead><tbody><tr><td>일반 적·플레이어</td><td>768×768</td><td>48~64px</td><td>실루엣·방향·주무기</td></tr><tr><td>엘리트</td><td>768~1024px</td><td>80~96px</td><td>위협 역할·방패·포신</td></tr><tr><td>보스</td><td>1536px 이상</td><td>192px 이상</td><td>약점·공격 방향·페이즈</td></tr><tr><td>노드</td><td>1024px</td><td>128px</td><td>공통 기단·타입 심볼</td></tr><tr><td>무기·VFX</td><td>1024px</td><td>16~128px</td><td>궤적·경계·타격 지점</td></tr><tr><td>아이콘</td><td>512px</td><td>48~64px</td><td>중심 물체·보조 기호</td></tr></tbody></table><p class="small">추천 순서: 플레이어 → 기본 적 → 노드 → 핵심 무기/VFX → 나머지 적 → 보스 → 바이옴 → UI.</p>
+<div id="catalog"></div><h2>참고 제작 흐름</h2><div class="cols"><div class="panel"><h3>초안 생성</h3><ol><li>카드 프롬프트로 3안 생성</li><li>가장 읽히는 실루엣 1안 선택</li><li>참조 이미지로 같은 진영 확장</li><li>배경 제거·외곽 정리</li></ol></div><div class="panel"><h3>게임 적용</h3><ol><li>Aseprite/Piskel에서 정리</li><li>4~8프레임부터 제작</li><li>영문 snake_case 저장</li><li>실제 화면에서 48px 테스트</li></ol></div></div><div class="footer">갱신일: 2026-07-14 · PDF 대신 이 웹문서를 기준본으로 사용</div></div><div id="toast" class="toast">복사됨</div>
+<script src="cyber-core-assets/asset-data-01.js"></script><script src="cyber-core-assets/asset-data-02.js"></script><script src="cyber-core-assets/asset-data-03.js"></script><script src="cyber-core-assets/asset-data-04.js"></script><script src="cyber-core-assets/asset-data-05.js"></script><script src="cyber-core-assets/asset-data-06.js"></script><script src="cyber-core-assets/asset-data-07.js"></script><script src="cyber-core-assets/asset-data-08.js"></script><script src="cyber-core-assets/asset-data-09.js"></script><script src="cyber-core-assets/asset-data-10.js"></script>
+<script>
+const categories=window.ASSET_CATEGORIES||[];const T={character:`Create a production-ready 2D game character concept sheet for {NAME}. {DESIGN}\nTop-down three-quarter view, cyber intrusion survivorlike, bold readable silhouette, controlled neon glow, transparent background. Show idle sprite, movement pose, attack pose, damaged pose and minimap icon. Recognizable at 48–64 pixels. No text, logo, scenery or poster composition.`,enemy:`Create a production-ready 2D enemy sprite concept sheet for {NAME}. {DESIGN}\nTop-down three-quarter view, rigid security-faction shape language, transparent background. Show idle, movement, attack telegraph, damaged state, death effect and minimap silhouette. Role readable within one second at 48–96 pixels.`,boss:`Create a production-ready 2D boss concept sheet for {NAME}. {DESIGN}\nTop-down three-quarter view, like a moving cyber-security facility. Show full body, weakpoint, phase transformation, signature attack telegraph and map icon. Transparent background, no text.`,node:`Create a production-ready top-down security node asset sheet for {NAME}. {DESIGN}\nShared hexagonal gunmetal platform and circular capture boundary. Show neutral, hostile, player-hacked, damaged states and map icon. Transparent background, no text.`,weapon:`Create a production-ready 2D weapon and VFX concept sheet for {NAME}. {DESIGN}\nShow projectile or zone shape, travel trail, telegraph, impact and 64-pixel icon. Controlled glow, transparent background. No character poster or text.`,evolution:`Create a production-ready evolved weapon and VFX concept sheet for {NAME}. {DESIGN}\nPreserve the base weapon ancestry while increasing scale and authority. Show effect, pattern, impact, icon and small in-game preview.`,passive:`Create a production-ready 2D passive-upgrade icon sheet for {NAME}. {DESIGN}\nOne central object plus one supporting symbol. Show normal, selected, max-level and locked states at 64 pixels. Transparent background, no text.`,biome:`Create a production-ready modular top-down biome asset kit for {NAME}. {DESIGN}\nShow seamless floor tile, four low-profile props, hazard decal, node-placement example and color palette. Keep combat readable.`,achievement:`Create a production-ready 2D achievement badge sheet for {NAME}. {DESIGN}\nShared hexagonal cyber medal frame. Show unlocked, grayscale locked and 48-pixel versions. One clear symbol, no text.`,ui:`Create a production-ready mobile-first game UI concept for {NAME}. {DESIGN}\nDark translucent panels, cyan information, magenta intrusion and orange danger. Prioritize touch targets, hierarchy and minimal obstruction. Render no actual text.`};
+function P(c,i){return T[c.assetType].replaceAll('{NAME}',i.name).replaceAll('{DESIGN}',i.design)+'\n\nFive key directions: '+i.keywords.join(', ')+'.'}function E(s){return s.replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}function render(){let n=0;const C=document.getElementById('catalog'),N=document.getElementById('catnav');categories.forEach(c=>{const b=document.createElement('button');b.className='navbtn';b.textContent=c.title;b.onclick=()=>document.getElementById(c.key).scrollIntoView({behavior:'smooth'});N.appendChild(b);const s=document.createElement('section');s.id=c.key;s.innerHTML=`<div class="sectionhead"><div><h2>${E(c.title)}</h2><p class="sectiondesc">${E(c.desc)}</p></div><span class="count">${c.items.length} ITEMS</span></div><div class="grid">${c.items.map(i=>{n++;const p=P(c,i),q=[i.name,i.role,i.apply,...i.keywords].join(' ').toLowerCase();return `<article class="card" data-search="${E(q)}"><div class="cardhead"><div><div class="role">${E(i.role)}</div><h3>${E(i.name)}</h3></div><span class="num">#${String(n).padStart(2,'0')}</span></div><div class="apply"><strong>적용 형태:</strong> ${E(i.apply)}</div><div class="keywords">${i.keywords.map(k=>`<code>${E(k)}</code>`).join('')}</div><div class="promptbox">${E(p)}</div><div class="actions"><button class="copybtn" onclick='copyText(${JSON.stringify(i.keywords.join(', '))})'>5키워드 복사</button><button class="copybtn" onclick='copyText(${JSON.stringify(p)})'>전체 프롬프트 복사</button></div></article>`}).join('')}</div>`;C.appendChild(s)})}async function copyText(t){try{await navigator.clipboard.writeText(t)}catch(e){const x=document.createElement('textarea');x.value=t;document.body.appendChild(x);x.select();document.execCommand('copy');x.remove()}const z=document.getElementById('toast');z.classList.add('show');setTimeout(()=>z.classList.remove('show'),900)}function copyCommon(){copyText(document.getElementById('commonPrompt').textContent)}document.getElementById('search').addEventListener('input',e=>{const q=e.target.value.trim().toLowerCase();document.querySelectorAll('.card').forEach(c=>c.classList.toggle('hidden',q&&!c.dataset.search.includes(q)))});render();
+</script></body></html>
