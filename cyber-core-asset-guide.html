@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cyber-Breach: Data Core 에셋 작업 가이드</title>
+  <style>
+    :root {
+      --bg: #0b1020;
+      --panel: #121a2f;
+      --panel-2: #0f1527;
+      --text: #e8eefc;
+      --muted: #b4bfd8;
+      --accent: #63e6ff;
+      --accent2: #ff48d6;
+      --accent3: #7dff82;
+      --line: #23304e;
+      --code: #0a0f1d;
+      --warn: #ffcc66;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Pretendard", "Noto Sans KR", Arial, sans-serif;
+      background: linear-gradient(180deg, #08101d 0%, #0b1020 100%);
+      color: var(--text);
+      line-height: 1.65;
+    }
+    .wrap { width: min(1080px, 92vw); margin: 0 auto; padding: 40px 0 80px; }
+    .hero {
+      background: radial-gradient(circle at top right, rgba(99,230,255,.12), transparent 28%), radial-gradient(circle at top left, rgba(255,72,214,.12), transparent 24%), var(--panel);
+      border: 1px solid var(--line); border-radius: 22px; padding: 28px; box-shadow: 0 16px 40px rgba(0,0,0,.25); margin-bottom: 22px;
+    }
+    h1, h2, h3 { line-height: 1.25; }
+    h1 { margin: 0 0 10px; font-size: 34px; }
+    h2 { margin-top: 34px; padding-top: 14px; border-top: 1px solid var(--line); font-size: 24px; }
+    h3 { margin-top: 26px; font-size: 18px; color: var(--accent); }
+    p, li, td, th { font-size: 15px; }
+    .muted { color: var(--muted); }
+    .lead { font-size: 16px; }
+    .badge { display: inline-block; padding: 5px 10px; margin: 0 8px 8px 0; border-radius: 999px; border: 1px solid var(--line); background: rgba(255,255,255,.03); color: var(--muted); font-size: 13px; }
+    .panel { background: var(--panel-2); border: 1px solid var(--line); border-radius: 18px; padding: 18px 20px; margin: 18px 0; }
+    pre { margin: 0; white-space: pre-wrap; word-break: break-word; background: var(--code); border: 1px solid #1d2741; border-radius: 14px; padding: 16px; color: #f2f7ff; font-size: 13.5px; line-height: 1.6; overflow: hidden; }
+    code { font-family: "JetBrains Mono", "Consolas", monospace; }
+    ul, ol { padding-left: 20px; }
+    table { width: 100%; border-collapse: collapse; margin: 12px 0 18px; overflow: hidden; border-radius: 14px; border: 1px solid var(--line); background: rgba(255,255,255,.02); }
+    th, td { border-bottom: 1px solid var(--line); padding: 12px 12px; vertical-align: top; text-align: left; }
+    th { background: rgba(99,230,255,.08); color: #f5fbff; font-weight: 700; }
+    tr:last-child td { border-bottom: none; }
+    .cols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+    .mini { background: rgba(255,255,255,.02); border: 1px solid var(--line); border-radius: 16px; padding: 16px; }
+    .tagline { color: var(--accent); font-weight: 700; margin-bottom: 6px; }
+    .warning { border-left: 4px solid var(--warn); padding: 10px 14px; background: rgba(255,204,102,.08); border-radius: 10px; }
+    a { color: var(--accent); text-decoration: none; }
+    .ref li { margin-bottom: 8px; }
+    .footer { margin-top: 36px; font-size: 13px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 20px; }
+    @media (max-width: 820px) { .cols { grid-template-columns: 1fr; } h1 { font-size: 28px; } h2 { font-size: 22px; } }
+    @media print {
+      body { background: #fff; color: #111; }
+      .wrap { width: 100%; padding: 0; }
+      .hero, .panel, .mini, table, pre { background: #fff !important; color: #111 !important; border-color: #ccc !important; box-shadow: none !important; }
+      a { color: #111; text-decoration: underline; }
+      .muted, .footer { color: #444 !important; }
+      .badge { color: #333; border-color: #ccc; }
+      .warning { background: #fff7e4; border-left-color: #b58100; }
+      h2 { page-break-after: avoid; }
+      pre, table, .panel, .mini { page-break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="hero">
+      <h1>Cyber-Breach: Data Core 에셋 작업 가이드</h1>
+      <p class="lead">에셋 담당자가 바로 읽고 써먹게 만든 정리본. 맨 위에는 <strong>공통 프롬프트</strong>, 그다음에 <strong>적용 대상</strong>, <strong>초안 뽑는 팁</strong>, <strong>바이브 코딩용 에셋 제작 흐름</strong>, <strong>참고 사이트</strong> 순서로 넣었다.</p>
+      <div>
+        <span class="badge">탑다운 3/4 시점</span>
+        <span class="badge">2D 서바이버라이크</span>
+        <span class="badge">사이버 침투 세계관</span>
+        <span class="badge">48~64px 가독성 우선</span>
+        <span class="badge">실루엣 구분 최우선</span>
+      </div>
+    </section>
+
+    <h2>1. 공통 프롬프트</h2>
+    <div class="panel">
+      <div class="tagline">기본 공통 프롬프트</div>
+      <pre><code>Create a production-ready 2D game asset concept sheet for [SUBJECT].
+
+Top-down three-quarter view, cyber intrusion survivorlike game, bold readable silhouette, minimal geometric cyberpunk design, clean vector-like rendering, controlled neon glow, dark internal shadows, no text, no logo, no UI frame.
+
+Show:
+1. idle sprite,
+2. movement pose,
+3. attack pose,
+4. damaged pose,
+5. simplified minimap icon.
+
+The asset must remain recognizable at 48–64 pixels.
+Use clear shape language and avoid excessive tiny details.
+Neutral transparent background, evenly spaced concept sheet.</code></pre>
+    </div>
+
+    <div class="cols">
+      <div class="mini"><div class="tagline">플레이어/침투 진영 추가 문장</div><pre><code>Intruder faction design language: asymmetrical triangular forms, saturated magenta, violet or lime accents, flowing glitch trails, fast agile appearance.</code></pre></div>
+      <div class="mini"><div class="tagline">적/보안 진영 추가 문장</div><pre><code>Security faction design language: rigid symmetry, white and pale cyan armor, square and shield-based construction, hostile orange warning lights.</code></pre></div>
+    </div>
+
+    <div class="cols">
+      <div class="mini"><div class="tagline">노드용 추가 문장</div><pre><code>Shared node structure: hexagonal floor platform, neutral gunmetal chassis, circular capture boundary, central holographic device, clear top-down readability.</code></pre></div>
+      <div class="mini"><div class="tagline">무기/VFX용 추가 문장</div><pre><code>Focus on projectile shape, trail, impact effect, and attack readability rather than character detail. Keep the silhouette readable even when scaled small.</code></pre></div>
+    </div>
+
+    <h2>2. 적용 대상</h2>
+    <p class="muted">레포 기준으로 지금 구분해서 작업해야 할 대상들. 한 번에 다 하지 말고, 아래 우선순위로 나눠서 가는 게 맞다.</p>
+    <table>
+      <thead><tr><th>분류</th><th>수량</th><th>우선 작업 포인트</th></tr></thead>
+      <tbody>
+        <tr><td>플레이어 프로그램</td><td>3</td><td>게임의 정체성. 먼저 뽑아서 전체 스타일 앵커로 삼기</td></tr>
+        <tr><td>일반/엘리트 적</td><td>12</td><td>실루엣 충돌 방지. 빠른놈/원거리/방패형이 즉시 구분돼야 함</td></tr>
+        <tr><td>보스</td><td>4</td><td>화면 장악감, 약점 위치, 공격 방향 읽힘이 핵심</td></tr>
+        <tr><td>보안 노드</td><td>7</td><td>공통 기단 + 중앙 심볼만 바꿔서 통일감 유지</td></tr>
+        <tr><td>기본 무기</td><td>18</td><td>투사체, 장판, 빔, 소환체, 디버프 마커를 분리해서 설계</td></tr>
+        <tr><td>진화 무기</td><td>12</td><td>기본 무기의 상위 형태처럼 보여야 함</td></tr>
+        <tr><td>바이옴</td><td>4</td><td>배경·타일·오브젝트 세트로 묶기</td></tr>
+        <tr><td>UI/HUD</td><td>1세트</td><td>체력·경험치·해킹 게이지·보스바·아이콘 통일</td></tr>
+      </tbody>
+    </table>
+
+    <div class="warning"><strong>작업 순서 추천:</strong> 플레이어 3종 → 기본 적 4~6종 → 노드 7종 → 핵심 무기/VFX → 보스 4종 → 바이옴 → UI. 이유는 간단함. 먼저 움직이는 애들이 읽혀야 테스트가 돌아가고, 그다음 목표물과 공격 이펙트를 붙이면 게임 맛이 산다.</div>
+
+    <h2>3. 이미지 초안 에셋으로 뽑는 팁</h2>
+    <div class="cols">
+      <div class="mini"><h3>3-1. 포스터 말고 “콘셉트 시트”</h3><ul><li>idle / move / attack / damaged / minimap icon을 같이 뽑기</li><li>배경은 투명 또는 무채색</li><li>게임용이면 one asset per sheet</li></ul></div>
+      <div class="mini"><h3>3-2. 48~64px 검사</h3><ul><li>축소했을 때 누군지 보이는가가 핵심</li><li>실루엣, 주무기 위치, 방패 유무가 한눈에 보여야 함</li><li>색만 다르고 모양이 같으면 실제 플레이에서 뭉개짐</li></ul></div>
+      <div class="mini"><h3>3-3. 색보다 형태</h3><ul><li>플레이어: 삼각형, 비대칭, 날렵함</li><li>보안 적: 사각형, 대칭, 경직됨</li><li>노드: 공통 육각 기단 + 중앙 장치</li><li>보스: 움직이는 시설물처럼 크게</li></ul></div>
+      <div class="mini"><h3>3-4. 프롬프트 필수어</h3><ul><li>top-down three-quarter view</li><li>transparent background</li><li>readable silhouette at 48–64 pixels</li><li>no text, no logo, no poster layout</li><li>concept sheet / sprite concept / minimap icon</li></ul></div>
+    </div>
+
+    <h2>4. 바이브 코딩식으로 게임 에셋 만드는 법</h2>
+    <p>“그림부터 완벽하게 다 만들고 나중에 넣자”로 가면 오래 끈다. 바이브 코딩 쪽은 보통 <strong>빠른 프로토타입 → 빈칸 메우기 → 교체 반복</strong>이 맞다.</p>
+    <div class="panel"><h3>4-1. 1차는 ‘가짜 완성’으로 빨리</h3><ol><li><strong>역할 고정</strong>: 플레이어인지, 원거리 적인지, 장판인지 먼저 정하기</li><li><strong>AI로 초안 3개</strong>: 한 대상당 3안 정도만 비교</li><li><strong>앵커 1개 선택</strong>: 게임과 맞는 1안을 기준으로 확장</li><li><strong>같은 톤으로 확장</strong>: 나머지 적·노드·무기를 이어서 제작</li><li><strong>코드에 바로 넣기</strong>: 실제 크기에서 안 읽히면 탈락</li></ol></div>
+    <div class="panel"><h3>4-2. 이름 규칙</h3><pre><code>assets/
+  characters/
+  enemies/
+  bosses/
+  nodes/
+  weapons/
+  vfx/
+  ui/</code></pre><ul><li>파일명은 영문 snake_case로 고정</li><li>역할별 폴더를 먼저 나눠 코드 매칭을 단순화</li></ul></div>
+    <div class="panel"><h3>4-3. 교체 가능한 임시본</h3><ul><li>초안 에셋을 먼저 넣고 상위 버전으로 갈아끼우기</li><li>UI 아이콘, 투사체, 장판은 임시본으로도 테스트 가능</li><li>보스·플레이어는 스타일 앵커, 잡몹은 템플릿화</li></ul></div>
+    <div class="panel"><h3>4-4. 실제 스프라이트화</h3><ul><li>AI 이미지는 콘셉트 참조용으로 쓰고 Aseprite/Piskel에서 정리</li><li>히트박스는 그림이 아니라 코드에서 관리</li><li>장판·빔·경고선은 타격감보다 예고성 우선</li><li>애니메이션은 처음부터 길게 말고 4~8프레임</li></ul></div>
+
+    <h2>5. 추천 툴 / 사이트</h2>
+    <div class="cols">
+      <div class="mini"><h3>Aseprite</h3><p>스프라이트 정리, 프레임 관리, 스프라이트 시트 출력에 강함.</p></div>
+      <div class="mini"><h3>Piskel</h3><p>브라우저에서 바로 쓰는 무료 animated sprites &amp; pixel art 에디터.</p></div>
+      <div class="mini"><h3>Kenney Assets</h3><p>2D, 3D, UI, Audio, Pixel, Textures 등 프로토타입용 자산을 찾기 좋음.</p></div>
+      <div class="mini"><h3>OpenGameArt</h3><p>에셋 라이브러리. CC0, CC-BY, CC-BY-SA 등 라이선스 확인 필수.</p></div>
+      <div class="mini"><h3>Godot / Phaser</h3><p>스프라이트 시트, 애니메이션, 웹게임 적용 흐름을 확인하기 좋음.</p></div>
+      <div class="mini"><h3>OpenAI Image Guide</h3><p>생성과 편집 흐름을 함께 활용해 한 번 뽑은 안을 계속 고쳐 쓰는 방식이 유리함.</p></div>
+    </div>
+
+    <h2>6. 유튜브 / 검색 키워드</h2>
+    <table>
+      <thead><tr><th>목적</th><th>추천 검색어</th></tr></thead>
+      <tbody>
+        <tr><td>Aseprite 기본기</td><td><code>aseprite top down sprite tutorial</code></td></tr>
+        <tr><td>픽셀 애니메이션</td><td><code>pixel art idle run attack animation tutorial</code></td></tr>
+        <tr><td>서바이버류 VFX</td><td><code>2d game particles slash beam effect tutorial</code></td></tr>
+        <tr><td>Godot 적용</td><td><code>godot sprite sheet animatedsprite2d tutorial</code></td></tr>
+        <tr><td>Phaser 적용</td><td><code>phaser sprite animation tutorial</code></td></tr>
+        <tr><td>AI 에셋 워크플로우</td><td><code>ai game asset workflow concept sheet sprite pipeline</code></td></tr>
+      </tbody>
+    </table>
+
+    <h2>7. 빠른 체크리스트</h2>
+    <div class="panel"><ul><li>한 에셋당 역할이 명확한가?</li><li>48px로 줄여도 누군지 보이는가?</li><li>배경 없이 바로 추출 가능한가?</li><li>다른 적과 실루엣이 겹치지 않는가?</li><li>노드들이 공통 기단을 공유하는가?</li><li>무기는 투사체와 이펙트 가독성이 우선인가?</li><li>라이선스 확인이 끝났는가?</li></ul></div>
+
+    <h2>8. 참고 링크</h2>
+    <ol class="ref">
+      <li><a href="https://www.aseprite.org/docs/sprite-sheet/">Aseprite Docs — Sprite sheets</a></li>
+      <li><a href="https://www.piskelapp.com/">Piskel</a></li>
+      <li><a href="https://kenney.nl/assets">Kenney Assets</a></li>
+      <li><a href="https://opengameart.org/content/faq">OpenGameArt FAQ</a></li>
+      <li><a href="https://docs.godotengine.org/en/stable/tutorials/2d/2d_sprite_animation.html">Godot Docs — 2D sprite animation</a></li>
+      <li><a href="https://phaser.io/tutorials/making-your-first-phaser-game">Phaser — Making your first game</a></li>
+      <li><a href="https://developers.openai.com/api/docs/guides/image-generation">OpenAI — Image generation guide</a></li>
+    </ol>
+
+    <div class="footer"><p>공개 공유용 문서. HTML 프리뷰와 PDF 버전을 함께 제공한다.</p></div>
+  </div>
+</body>
+</html>
